@@ -1,11 +1,13 @@
 package tests;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,10 +15,15 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import suporte.Generator;
+import suporte.Screenshot;
  
 public class InformacoesUsuarioTest {
-	
 	private WebDriver navegador;
+	
+	@Rule
+	public TestName test = new TestName();
 	
 	@Before
 	public void setUp() {
@@ -93,6 +100,9 @@ public class InformacoesUsuarioTest {
 		String mensagem = mensagemPop.getText();
 		assertEquals("Rest in peace, dear phone!", mensagem);
 		
+		String screenshotArquivo = "C:\\Users\\SempreIT\\test-report\\udemy\\" +Generator.dataHoraArquivo() + test.getMethodName() + ".png";
+		Screenshot.tirarScreenshot(navegador, screenshotArquivo);
+		
 		//aguardar até 10s pra mensagemPop sumir
 		WebDriverWait aguardar = new WebDriverWait(navegador, 10);
 		aguardar.until(ExpectedConditions.stalenessOf(mensagemPop));
@@ -107,7 +117,7 @@ public class InformacoesUsuarioTest {
 	public void tearDown() {
 		
 		//fechar a guia
-		//navegador.close();
+		navegador.close();
 				
 	}
 }
